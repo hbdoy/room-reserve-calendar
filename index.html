@@ -14,156 +14,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script>
-        $(document).ready(function () {
-
-            $('#calendar').fullCalendar({
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay'
-                },
-                nowIndicator: true,
-                // height: 650,
-                // contentHeight: 600,
-                handleWindowResize: false, // 拖曳瀏覽器視窗時，是否動態調整大小
-                navLinks: true, // can click day/week names to navigate views
-                selectable: true,
-                selectHelper: true,
-                select: function (start, end) {
-                    var title = prompt('Event Title:');
-                    var eventData;
-                    if (title) {
-                        eventData = {
-                            title: title,
-                            start: start,
-                            end: end
-                        };
-                        // 將新排成加到日曆上
-                        $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
-                    }
-                    $('#calendar').fullCalendar('unselect');
-
-                    // 取出所有排成
-                    // var all = $("#calendar").fullCalendar('clientEvents')
-                },
-                eventClick: function (event, element) {
-
-                    console.log(event, element);
-
-                    // event.title = "CLICKED!";
-
-                    // 重新 render 某個排成
-                    // $('#calendar').fullCalendar('updateEvent', event);
-
-                    // 重新 render 多個事件
-                    // .fullCalendar('updateEvents', events)
-
-                    // 刪除排成
-                    // $('#calendar').fullCalendar('removeEvents', event._id);
-
-                },
-                // 排成拖動到新時間觸發
-                eventDrop: function (event, delta, revertFunc) {
-
-                    alert(event.title + " was dropped on " + event.start.format());
-
-                    if (!confirm("Are you sure about this change?")) {
-                        revertFunc();
-                    }
-
-                },
-                // 調整排成時間觸發
-                eventResize: function (event, delta, revertFunc) {
-
-                    alert(event.title + " end is now " + event.end.format());
-
-                    if (!confirm("is this okay?")) {
-                        revertFunc();
-                    }
-
-                },
-                editable: true, // allow the time of event can be changed
-                eventLimit: true, // allow "more" link when too many events
-                events: [{
-                        title: '觀餐系',
-                        start: '2018-09-01'
-                    },
-                    {
-                        title: '資管系',
-                        start: '2018-09-02',
-                        end: '2018-09-05'
-                    },
-                    {
-                        title: '經濟系',
-                        start: '2018-09-09T16:00:00',
-                        end: '2018-09-09T18:00:00'
-                    },
-                    {
-                        title: '國企系',
-                        start: '2018-09-09T09:00:00',
-                        end: '2018-09-09T12:00:00'
-                    },
-                    {
-                        title: 'Conference',
-                        start: '2018-03-11',
-                        end: '2018-03-13'
-                    },
-                    {
-                        title: 'Meeting',
-                        start: '2018-03-12T10:30:00',
-                        end: '2018-03-12T12:30:00'
-                    },
-                    {
-                        title: 'Lunch',
-                        start: '2018-03-12T12:00:00'
-                    },
-                    {
-                        title: 'Meeting',
-                        start: '2018-03-12T14:30:00'
-                    },
-                    {
-                        title: 'Happy Hour',
-                        start: '2018-03-12T17:30:00'
-                    },
-                    {
-                        title: 'Dinner',
-                        start: '2018-03-12T20:00:00'
-                    },
-                    {
-                        title: 'Birthday Party',
-                        start: '2018-03-13T07:00:00'
-                    },
-                    {
-                        title: 'Click for Google',
-                        url: 'http://google.com/',
-                        start: '2018-03-28'
-                    }
-                ],
-
-                // 透過函數取得
-                // events: function (start, end, timezone, callback) {
-                //     $.ajax({
-                //         ...
-                //         success: function (doc) {
-                //             var events = [];
-                //             $(doc).find('event').each(function () {
-                //                 events.push({
-                //                     title: $(this).attr('title'),
-                //                     start: $(this).attr('start') // will be parsed
-                //                 });
-                //             });
-                //             callback(events);
-                //         }
-                //     });
-                // }
-            });
-
-        });
-    </script>
+    <script src="./js/calendarInit.js"></script>
     <style>
         body {
-            margin: 30px 0 80px 0;
+            margin-bottom: 80px;
+            font-family: '微軟正黑體';
         }
 
         #calendar {
@@ -189,48 +44,26 @@
                     <li>
                         <div class="divider"></div>
                     </li>
-                    <li>
-                        <h5 style="text-align: center">管理學院</h5>
-                    </li>
-                    <li><a href="#!">管 201</a></li>
-                    <li><a href="#!">管 301</a></li>
-                    <li><a href="#!">管 401</a></li>
-                    <li>
-                        <div class="divider"></div>
-                    </li>
-                    <li>
-                        <h5 style="text-align: center">人文學院</h5>
-                    </li>
-                    <li><a href="#!">人 201</a></li>
-                    <li><a href="#!">人 301</a></li>
-                    <li><a href="#!">人 401</a></li>
-                    <li>
-                        <div class="divider"></div>
-                    </li>
-                    <li>
-                        <h5 style="text-align: center">科技學院</h5>
-                    </li>
-                    <li><a href="#!">科 201</a></li>
-                    <li><a href="#!">科 301</a></li>
-                    <li><a href="#!">科 401</a></li>
-                    <li>
-                        <div class="divider"></div>
-                    </li>
-                    <li>
-                        <h5 style="text-align: center">教育學院</h5>
-                    </li>
-                    <li><a href="#!">教 201</a></li>
-                    <li><a href="#!">教 301</a></li>
-                    <li><a href="#!">教 401</a></li>
-                    <li>
-                        <div class="divider"></div>
-                    </li>
+                    <div id="class-room">
+                        <li>
+                            <a class="btn waves-effect waves-light brown lighten-1" href="#m" style="font-size: 25px">管理學院</a>
+                        </li>
+                        <li>
+                            <a class="btn waves-effect waves-light brown lighten-1" href="#h" style="font-size: 25px">人文學院</a>
+                        </li>
+                        <li>
+                            <a class="btn waves-effect waves-light brown lighten-1" href="#t" style="font-size: 25px">科技學院</a>
+                        </li>
+                        <li>
+                            <a class="btn waves-effect waves-light brown lighten-1" href="#e" style="font-size: 25px">教育學院</a>
+                        </li>
+                    </div>
                 </ul>
                 <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             </div>
             <div class="col s12 m10">
                 <div class="col s12" style="margin-bottom: 20px">
-                    <h3 class="header blue-text darken-4" style="margin-top: 0">教室預約</h3>
+                    <h3 id="header-text" class="grey-text text-darken-2">教室預約</h3>
                     <div class="divider"></div>
                 </div>
                 <div class="col s12">
@@ -240,33 +73,21 @@
         </div>
     </div>
     <div class="fixed-action-btn">
-        <a class="btn-floating btn-large red">
+        <a id="form-btn" class="btn-floating btn-large red waves-effect waves-light" href="#">
             <i class="large material-icons">mode_edit</i>
         </a>
-        <ul>
-            <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
-            <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
-            <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
-            <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
-        </ul>
+    </div>
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+        <div id="reserve-form" class="modal-content">
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+        </div>
     </div>
 
 
-    <script>
-        M.AutoInit();
-        $(document).ready(function () {
-            $('.sidenav').sidenav();
-        });
-        document.addEventListener('DOMContentLoaded', function () {
-            var elems = document.querySelectorAll('.sidenav');
-            var instances = M.Sidenav.init(elems);
-        });
-
-        document.addEventListener('DOMContentLoaded', function () {
-            var elems = document.querySelectorAll('.fixed-action-btn');
-            var instances = M.FloatingActionButton.init(elems);
-        });
-    </script>
+    <script src="./js/script.js"></script>
 </body>
 
 </html>
