@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="./js/calendarInit.js"></script>
     <style>
         body {
             margin-bottom: 80px;
@@ -86,7 +85,20 @@
         </div>
     </div>
 
-
+    <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyBDS8_p5NCbVmM7yMrblOLQNsA8zYteTZ4",
+            authDomain: "ncnu-calendar.firebaseapp.com",
+            databaseURL: "https://ncnu-calendar.firebaseio.com",
+            projectId: "ncnu-calendar",
+            storageBucket: "ncnu-calendar.appspot.com",
+            messagingSenderId: "1082700381546"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script src="./js/calendarInit.js"></script>
     <script src="./js/script.js"></script>
 </body>
 

@@ -10,30 +10,35 @@ $(document).ready(function () {
         let tmp;
         switch (hash) {
             case 'm':
+                $('#calendar').fullCalendar('removeEventSources');
                 console.log("管院");
                 roomTitle = "管";
                 tmp = classRoomTemplate("管理學院", "管");
                 $("#class-room").html(tmp);
                 break;
             case 'h':
+                $('#calendar').fullCalendar('removeEventSources');
                 console.log("人院");
                 roomTitle = "人";
                 tmp = classRoomTemplate("人文學院", "人");
                 $("#class-room").html(tmp);
                 break;
             case 't':
+                $('#calendar').fullCalendar('removeEventSources');
                 console.log("科院");
                 roomTitle = "科";
                 tmp = classRoomTemplate("科技學院", "科");
                 $("#class-room").html(tmp);
                 break;
             case 'e':
+                $('#calendar').fullCalendar('removeEventSources');
                 console.log("教院");
                 roomTitle = "教";
                 tmp = classRoomTemplate("教育學院", "教");
                 $("#class-room").html(tmp);
                 break;
             case 'back':
+                $('#calendar').fullCalendar('removeEventSources');
                 console.log("上一頁");
                 roomId = 0;
                 roomTitle = "";
@@ -51,11 +56,14 @@ $(document).ready(function () {
                     <a class="btn waves-effect waves-light brown lighten-1" href="#e" style="font-size: 25px">教育學院</a>
                 </li>
                 `);
+                $('#calendar').fullCalendar('removeEventSources');
                 break;
             default:
                 if (!isNaN(hash) && hash != "") {
+                    $('#calendar').fullCalendar('removeEventSources');
                     console.log(hash);
                     roomId = hash;
+                    getEvents();
                     $("#header-text").html(`教室預約: ${roomTitle}-${roomId}`);
                 } else if (roomId == 0 && roomTitle == "") {
                     $("#header-text").html(`教室預約`);
@@ -63,6 +71,22 @@ $(document).ready(function () {
                 break;
         }
         location.hash = "";
+    }
+
+    function getEvents() {
+        db.ref(`/${roomTitle}/${roomId}`).once('value', function (snapshot) {
+            var allData = snapshot.val();
+            var eventData = [];
+            console.log(allData);
+            for (const key in allData) {
+                if (allData.hasOwnProperty(key)) {
+                    const element = allData[key];
+                    eventData.push(element);
+                }
+            }
+            $('#calendar').fullCalendar('addEventSource', eventData);
+        })
+        ;
     }
 
     function classRoomTemplate(title, tag) {
@@ -187,14 +211,14 @@ $(document).ready(function () {
             eventData.end = edate;
         }
         if (stime != "") {
-            if (!(/^([0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test(stime))) {
-                alert("結束時間格式錯誤");
+            if (!(/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test(stime))) {
+                alert("開始時間格式錯誤");
                 return;
             }
             eventData.start += `T${stime}:00`;
         }
         if (etime != "") {
-            if (!(/^([0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test(etime))) {
+            if (!(/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test(etime))) {
                 alert("結束時間格式錯誤");
                 return;
             }
@@ -212,7 +236,16 @@ $(document).ready(function () {
         }
         if (confirm("確定要預約嗎?")) {
             console.log(eventData);
-            $('#calendar').fullCalendar('renderEvent', eventData, true);
+            db.ref(`/${roomTitle}/${roomId}`)
+            .push(eventData)
+            .then(function () {
+                $('#calendar').fullCalendar('addEventSource', [eventData]);
+            })
+            .catch(function () {
+                alert("伺服器發生錯誤，請稍後再試");
+            });
+            var instance = M.Modal.getInstance(document.getElementById("modal1"));
+            instance.close();
         }
     }
 });
