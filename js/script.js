@@ -85,8 +85,7 @@ $(document).ready(function () {
                 }
             }
             $('#calendar').fullCalendar('addEventSource', eventData);
-        })
-        ;
+        });
     }
 
     function classRoomTemplate(title, tag) {
@@ -107,7 +106,9 @@ $(document).ready(function () {
         <li><a href="#401" class="btn waves-effect waves-light pink accent-1">${tag} 401</a></li>`;
     }
 
-    $("#form-btn").click(function (e) {
+    $("#form-btn").click(renderForm);
+
+    function renderForm(e) {
         e.preventDefault();
         let alertText = "";
         if (roomId == 0 || roomTitle == "") {
@@ -181,7 +182,7 @@ $(document).ready(function () {
         // 手動開啟 modal
         var instance = M.Modal.getInstance(document.getElementById("modal1"));
         instance.open();
-    });
+    }
 
     $(document).on('click', '#subBtn', submitForm);
 
@@ -209,23 +210,23 @@ $(document).ready(function () {
                 return;
             }
             eventData.end = edate;
+        } else {
+            eventData.end = sdate;
         }
-        if (stime != "") {
-            if (!(/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test(stime))) {
-                alert("開始時間格式錯誤");
-                return;
-            }
+        if (!(/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test(stime))) {
+            alert("開始時間格式錯誤");
+            return;
+        } else {
             eventData.start += `T${stime}:00`;
         }
-        if (etime != "") {
-            if (!(/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test(etime))) {
-                alert("結束時間格式錯誤");
-                return;
-            }
-            if (stime > etime) {
-                alert("結束時間小於開始時間");
-                return;
-            }
+        if (!(/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test(etime))) {
+            alert("結束時間格式錯誤");
+            return;
+        }
+        if (sdate == edate && stime > etime) {
+            alert("結束時間小於開始時間");
+            return;
+        } else {
             eventData.end += `T${etime}:00`;
         }
         if (!depart) {
@@ -237,13 +238,13 @@ $(document).ready(function () {
         if (confirm("確定要預約嗎?")) {
             console.log(eventData);
             db.ref(`/${roomTitle}/${roomId}`)
-            .push(eventData)
-            .then(function () {
-                $('#calendar').fullCalendar('addEventSource', [eventData]);
-            })
-            .catch(function () {
-                alert("伺服器發生錯誤，請稍後再試");
-            });
+                .push(eventData)
+                .then(function () {
+                    $('#calendar').fullCalendar('addEventSource', [eventData]);
+                })
+                .catch(function () {
+                    alert("伺服器發生錯誤，請稍後再試");
+                });
             var instance = M.Modal.getInstance(document.getElementById("modal1"));
             instance.close();
         }

@@ -15,18 +15,18 @@ $(document).ready(function () {
         selectable: true,
         selectHelper: true,
         select: function (start, end) {
-            var title = prompt('Event Title:');
-            var eventData;
-            if (title) {
-                eventData = {
-                    title: title,
-                    start: start,
-                    end: end
-                };
-                // 將新排成加到日曆上
-                $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
-            }
-            $('#calendar').fullCalendar('unselect');
+            // var title = prompt('Event Title:');
+            // var eventData;
+            // if (title) {
+            //     eventData = {
+            //         title: title,
+            //         start: start,
+            //         end: end
+            //     };
+            //     // 將新排成加到日曆上
+            //     $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+            // }
+            // $('#calendar').fullCalendar('unselect');
 
             // 取出所有排成
             // var all = $("#calendar").fullCalendar('clientEvents')
