@@ -3,10 +3,6 @@ body {
     font-family: '微軟正黑體';
 }
 
-.wrapper {
-    padding: 0 20px;
-}
-
 #calendar {
     margin: 0 auto;
     width: 100%;

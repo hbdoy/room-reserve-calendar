@@ -1,5 +1,4 @@
 var db = firebase.database();
-
 $(document).ready(function () {
     $('#calendar').fullCalendar({
         header: {
@@ -15,6 +14,7 @@ $(document).ready(function () {
         selectable: true,
         selectHelper: true,
         select: function (start, end) {
+            $("#form-btn").click();
             // var title = prompt('Event Title:');
             // var eventData;
             // if (title) {
