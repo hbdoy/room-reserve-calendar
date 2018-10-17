@@ -1,4 +1,3 @@
-var db = firebase.database();
 $(document).ready(function () {
     $('#calendar').fullCalendar({
         header: {
