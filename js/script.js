@@ -26,9 +26,9 @@ $(document).ready(function () {
             e: "教"
         };
         let tmp;
-        $("#header-text").html(`教室預約`);
         $('#calendar').fullCalendar('removeEventSources');
         roomTitle = college[type];
+        $("#header-text").html(`${roomTitle}院`);
         tmp = classRoomTemplate(roomTitle);
         $("#class-room").html(tmp);
     }
@@ -40,7 +40,7 @@ $(document).ready(function () {
             console.log(this.value);
             roomId = this.value;
             getEvents();
-            $("#header-text").html(`教室預約: ${roomTitle}-${roomId}`);
+            $("#header-text").html(`${roomTitle}院-${roomId}`);
         } else {
             $("#header-text").html(`教室預約`);
         }
@@ -88,38 +88,13 @@ $(document).ready(function () {
             <input type="text" id="end-date" class="datepicker" placeholder="End-Date">
             <input type="text" id="start-time" class="timepicker" placeholder="Start-Time">
             <input type="text" id="end-time" class="timepicker" placeholder="End-Time">
-            <div class="input-field col s12">
-                <select id="depart">
-                    <option value="" disabled selected>Choose your option</option>
-                    <optgroup label="管院">
-                        <option value="資管系">資管系</option>
-                        <option value="財金系">財金系</option>
-                        <option value="經濟系">經濟系</option>
-                        <option value="國企系">國企系</option>
-                        <option value="觀餐系">觀餐系</option>
-                    </optgroup>
-                    <optgroup label="科院">
-                        <option value="資工系">資工系</option>
-                        <option value="土木系">土木系</option>
-                        <option value="電機系">電機系</option>
-                        <option value="應化系">應化系</option>
-                        <option value="應光系">應光系</option>
-                    </optgroup>
-                    <optgroup label="人院">
-                        <option value="中文系">中文系</option>
-                        <option value="外文系">外文系</option>
-                        <option value="社工系">社工系</option>
-                        <option value="公行系">公行系</option>
-                        <option value="歷史系">歷史系</option>
-                        <option value="東南亞系">東南亞系</option>
-                    </optgroup>
-                    <optgroup label="教院">
-                        <option value="國比系">國比系</option>
-                        <option value="教政系">教政系</option>
-                        <option value="諮人系">諮人系</option>
-                    </optgroup>
-                </select>
-                <label>系所</label>
+            <div class="input-field">
+                <input type="text" id="userName">
+                <label for="userName">Name</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="userPhone">
+                <label for="userPhone">Phone</label>
             </div>
             `;
             $(".modal-footer").html(`
@@ -130,13 +105,13 @@ $(document).ready(function () {
         }
         $("#reserve-form").html(alertText);
         M.Datepicker.init(document.querySelectorAll('.datepicker'), {
-            container: '.container',
+            container: '.wrapper',
             autoClose: true,
             format: 'yyyy-mm-dd',
             showClearBtn: true
         });
         M.Timepicker.init(document.querySelectorAll('.timepicker'), {
-            container: '.container',
+            container: '.wrapper',
             autoClose: true,
             twelveHour: false
         });
@@ -154,9 +129,10 @@ $(document).ready(function () {
         var edate = $("#end-date").val();
         var stime = $("#start-time").val();
         var etime = $("#end-time").val();
-        var depart = $("#depart").val();
+        var userName = $("#userName").val();
+        var userPhone = $("#userPhone").val();
         var eventData = {};
-        console.log(sdate, edate, stime, etime, depart);
+        console.log(sdate, edate, stime, etime, userName, userPhone);
         if (!(/(\d{4})-(\d{2})-(\d{2})/.test(sdate))) {
             alert("起始日期格式錯誤");
             return;
@@ -174,6 +150,7 @@ $(document).ready(function () {
             }
             eventData.end = edate;
         } else {
+            edate = sdate;
             eventData.end = sdate;
         }
         if (!(/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test(stime))) {
@@ -192,11 +169,17 @@ $(document).ready(function () {
         } else {
             eventData.end += `T${etime}:00`;
         }
-        if (!depart) {
-            alert("請選擇系所");
+        if (userName == "") {
+            alert("請輸入姓名");
             return;
         } else {
-            eventData.title = depart;
+            eventData.title = userName;
+        }
+        if (userPhone == "" || isNaN(userPhone)) {
+            alert("請輸入連絡電話");
+            return;
+        } else {
+            eventData.phone = userPhone;
         }
         if (confirm("確定要預約嗎?")) {
             console.log(eventData);
