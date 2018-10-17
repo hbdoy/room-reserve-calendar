@@ -20,17 +20,15 @@ $(document).ready(function () {
 
     function renderRoomSelect(type) {
         let college = {
-            m: "管",
-            h: "人",
-            t: "科",
-            e: "教"
+            m: "管理學院",
+            h: "人文學院",
+            t: "科技學院",
+            e: "教育學院"
         };
-        let tmp;
         $('#calendar').fullCalendar('removeEventSources');
         roomTitle = college[type];
-        $("#header-text").html(`${roomTitle}院`);
-        tmp = classRoomTemplate(roomTitle);
-        $("#class-room").html(tmp);
+        $("#header-text").html(`${roomTitle[0]}院`);
+        classRoomTemplate(roomTitle[0]);
     }
 
     // 選取教室時觸發
@@ -40,33 +38,55 @@ $(document).ready(function () {
             console.log(this.value);
             roomId = this.value;
             getEvents();
-            $("#header-text").html(`${roomTitle}院-${roomId}`);
+            $("#header-text").html(`${roomTitle[0]}院-${roomId}`);
         } else {
             $("#header-text").html(`教室預約`);
         }
     });
 
     function getEvents() {
-        db.ref(`/${roomTitle}/${roomId}`).once('value', function (snapshot) {
-            var allData = snapshot.val();
-            var eventData = [];
-            console.log(allData);
-            for (const key in allData) {
-                if (allData.hasOwnProperty(key)) {
-                    const element = allData[key];
-                    eventData.push(element);
+        $.ajax({
+            url: `https://xn--pss23c41retm.tw/api/reservation/${roomTitle}/${roomId}`,
+            type: 'GET',
+            error: function (xhr) {
+                alert('Ajax request 發生錯誤');
+            },
+            success: function (res) {
+                console.log(res);
+                var eventData = [];
+                for (const key in res) {
+                    if (res.hasOwnProperty(key)) {
+                        for (const inner_key in res[key]) {
+                            if (res[key].hasOwnProperty(inner_key)) {
+                                eventData.push(res[key][inner_key]);
+                            }
+                        }
+                    }
                 }
+                console.log(eventData);
+                $('#calendar').fullCalendar('addEventSource', eventData);
             }
-            $('#calendar').fullCalendar('addEventSource', eventData);
         });
     }
 
     function classRoomTemplate(tag) {
-        return `
-        <option value="" disabled selected>Choose your option</option>
-        <option value="201">${tag} 201</option>
-        <option value="301">${tag} 301</option>
-        <option value="401">${tag} 401</option>`;
+        $.ajax({
+            url: `https://xn--pss23c41retm.tw/api/reservation/${roomTitle}`,
+            type: 'GET',
+            error: function (xhr) {
+                alert('Ajax request 發生錯誤');
+            },
+            success: function (res) {
+                // console.log(res);
+                let str = `<option value="" disabled selected>Choose your option</option>`;
+                for (const key in res) {
+                    if (res.hasOwnProperty(key)) {
+                        str += `<option value="${key}">${tag} ${key}</option>`;
+                    }
+                }
+                $("#class-room").html(str);
+            }
+        });
     }
 
     $("#form-btn").click(renderForm);
@@ -82,15 +102,18 @@ $(document).ready(function () {
             alertText = `
             <h4>請輸入預約資訊</h4>
             <div class="chip">
-                ${roomTitle}${roomId}
+                ${roomTitle[0]}${roomId}
             </div>
             <input type="text" id="start-date" class="datepicker" placeholder="Start-Date">
-            <input type="text" id="end-date" class="datepicker" placeholder="End-Date">
             <input type="text" id="start-time" class="timepicker" placeholder="Start-Time">
             <input type="text" id="end-time" class="timepicker" placeholder="End-Time">
             <div class="input-field">
                 <input type="text" id="userName">
                 <label for="userName">Name</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="des">
+                <label for="des">Describe</label>
             </div>
             <div class="input-field">
                 <input type="text" id="userPhone">
@@ -126,54 +149,46 @@ $(document).ready(function () {
 
     function submitForm() {
         var sdate = $("#start-date").val();
-        var edate = $("#end-date").val();
+        var des = $("#des").val();
         var stime = $("#start-time").val();
         var etime = $("#end-time").val();
         var userName = $("#userName").val();
         var userPhone = $("#userPhone").val();
         var eventData = {};
-        console.log(sdate, edate, stime, etime, userName, userPhone);
-        if (!(/(\d{4})-(\d{2})-(\d{2})/.test(sdate))) {
+        console.log(sdate, stime, etime, userName, userPhone);
+        if (!(/(\d{4})-(\d{2})-(\d{2})/.test(sdate)) || sdate == "") {
             alert("起始日期格式錯誤");
             return;
         } else {
             eventData.start = sdate;
-        }
-        if (edate != "") {
-            if (!(/(\d{4})-(\d{2})-(\d{2})/.test(edate))) {
-                alert("結束日期格式錯誤");
-                return;
-            }
-            if (sdate > edate) {
-                alert("結束日小於開始日");
-                return;
-            }
-            eventData.end = edate;
-        } else {
-            edate = sdate;
             eventData.end = sdate;
         }
         if (!(/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test(stime))) {
             alert("開始時間格式錯誤");
             return;
-        } else {
-            eventData.start += `T${stime}:00`;
         }
         if (!(/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test(etime))) {
             alert("結束時間格式錯誤");
             return;
         }
-        if (sdate == edate && stime > etime) {
+        if (stime > etime) {
             alert("結束時間小於開始時間");
             return;
         } else {
+            eventData.start += `T${stime}:00`;
             eventData.end += `T${etime}:00`;
         }
         if (userName == "") {
             alert("請輸入姓名");
             return;
         } else {
-            eventData.title = userName;
+            eventData.name = userName;
+        }
+        if(des == ""){
+            alert("請輸入描述");
+            return;
+        } else {
+            eventData.title = des;
         }
         if (userPhone == "" || isNaN(userPhone)) {
             alert("請輸入連絡電話");
@@ -183,14 +198,23 @@ $(document).ready(function () {
         }
         if (confirm("確定要預約嗎?")) {
             console.log(eventData);
-            db.ref(`/${roomTitle}/${roomId}`)
-                .push(eventData)
-                .then(function () {
+            eventData.repeat = "none";
+            eventData.repeat_end = "none";
+            eventData.type = "inside";
+            eventData.conflict = false;
+            $.ajax({
+                url: `https://xn--pss23c41retm.tw/api/reservation/${roomTitle}/${roomId}`,
+                type: 'POST',
+                data: eventData,
+                error: function (xhr) {
+                    alert('Ajax request 發生錯誤');
+                    console.log(xhr);
+                },
+                success: function (res) {
+                    console.log(res);
                     $('#calendar').fullCalendar('addEventSource', [eventData]);
-                })
-                .catch(function () {
-                    alert("伺服器發生錯誤，請稍後再試");
-                });
+                }
+            });
             var instance = M.Modal.getInstance(document.getElementById("modal1"));
             instance.close();
         }
