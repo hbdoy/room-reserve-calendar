@@ -1,0 +1,53 @@
+body {
+    margin-bottom: 80px;
+    font-family: '微軟正黑體';
+}
+
+.wrapper {
+    padding: 0 20px;
+}
+
+#calendar {
+    margin: 0 auto;
+    width: 100%;
+}
+
+.fc-button:focus {
+    background-color: #e6e6e6 !important;
+    outline: 1px !important;
+}
+
+.bg-gradient {
+    background: linear-gradient(270deg, #EE9CA7 23%, #FFDDE1 60%);
+    background: -moz-linear-gradient(270deg, #EE9CA7 23%, #FFDDE1 60%);
+    background: -webkit-linear-gradient(270deg, #EE9CA7 23%, #FFDDE1 60%);
+    background: -o-linear-gradient(270deg, #EE9CA7 23%, #FFDDE1 60%);
+}
+
+.bg-gradient-level {
+    background: linear-gradient(0deg, #EE9CA7 23%, #F6BCC4 60%);
+    background: -moz-linear-gradient(0deg, #EE9CA7 23%, #F6BCC4 60%);
+    background: -webkit-linear-gradient(0deg, #EE9CA7 23%, #F6BCC4 60%);
+    background: -o-linear-gradient(0deg, #EE9CA7 23%, #F6BCC4 60%);
+}
+
+#myNavBar li a {
+    color: white;
+    font-size: 20px;
+}
+
+#myNavBar li {
+    margin-bottom: 10px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.w100 {
+    width: 100%;
+}
+
+.text-brown {
+    color: #555555;
+}
