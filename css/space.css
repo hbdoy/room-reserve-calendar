@@ -9,6 +9,11 @@
         padding-right: 20px;
     }
 }
+@media screen and (max-width: 576px) {
+    .d-none-sm {
+        display: none;
+    }
+}
 
 .px-0 {
     padding-left: 0;

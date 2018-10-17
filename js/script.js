@@ -7,71 +7,44 @@ $(document).ready(function () {
     window.onhashchange = function () {
         // console.log(location.hash);
         var hash = location.hash.replace("#", "");
-        let tmp;
         switch (hash) {
             case 'm':
-                $('#calendar').fullCalendar('removeEventSources');
-                console.log("管院");
-                roomTitle = "管";
-                tmp = classRoomTemplate("管理學院", "管");
-                $("#class-room").html(tmp);
-                break;
             case 'h':
-                $('#calendar').fullCalendar('removeEventSources');
-                console.log("人院");
-                roomTitle = "人";
-                tmp = classRoomTemplate("人文學院", "人");
-                $("#class-room").html(tmp);
-                break;
             case 't':
-                $('#calendar').fullCalendar('removeEventSources');
-                console.log("科院");
-                roomTitle = "科";
-                tmp = classRoomTemplate("科技學院", "科");
-                $("#class-room").html(tmp);
-                break;
             case 'e':
-                $('#calendar').fullCalendar('removeEventSources');
-                console.log("教院");
-                roomTitle = "教";
-                tmp = classRoomTemplate("教育學院", "教");
-                $("#class-room").html(tmp);
-                break;
-            case 'back':
-                $('#calendar').fullCalendar('removeEventSources');
-                console.log("上一頁");
-                roomId = 0;
-                roomTitle = "";
-                $("#class-room").html(`
-                <li>
-                    <a class="btn waves-effect waves-light brown lighten-1" href="#m" style="font-size: 25px">管理學院</a>
-                </li>
-                <li>
-                    <a class="btn waves-effect waves-light brown lighten-1" href="#h" style="font-size: 25px">人文學院</a>
-                </li>
-                <li>
-                    <a class="btn waves-effect waves-light brown lighten-1" href="#t" style="font-size: 25px">科技學院</a>
-                </li>
-                <li>
-                    <a class="btn waves-effect waves-light brown lighten-1" href="#e" style="font-size: 25px">教育學院</a>
-                </li>
-                `);
-                $('#calendar').fullCalendar('removeEventSources');
-                break;
-            default:
-                if (!isNaN(hash) && hash != "") {
-                    $('#calendar').fullCalendar('removeEventSources');
-                    console.log(hash);
-                    roomId = hash;
-                    getEvents();
-                    $("#header-text").html(`教室預約: ${roomTitle}-${roomId}`);
-                } else if (roomId == 0 && roomTitle == "") {
-                    $("#header-text").html(`教室預約`);
-                }
+                renderRoomSelect(hash);
                 break;
         }
         location.hash = "";
     }
+
+    function renderRoomSelect(type) {
+        let college = {
+            m: "管",
+            h: "人",
+            t: "科",
+            e: "教"
+        };
+        let tmp;
+        $("#header-text").html(`教室預約`);
+        $('#calendar').fullCalendar('removeEventSources');
+        roomTitle = college[type];
+        tmp = classRoomTemplate(roomTitle);
+        $("#class-room").html(tmp);
+    }
+
+    // 選取教室時觸發
+    $('#class-room').change(function () {
+        if (!isNaN(this.value) && this.value != "") {
+            $('#calendar').fullCalendar('removeEventSources');
+            console.log(this.value);
+            roomId = this.value;
+            getEvents();
+            $("#header-text").html(`教室預約: ${roomTitle}-${roomId}`);
+        } else {
+            $("#header-text").html(`教室預約`);
+        }
+    });
 
     function getEvents() {
         db.ref(`/${roomTitle}/${roomId}`).once('value', function (snapshot) {
@@ -88,22 +61,12 @@ $(document).ready(function () {
         });
     }
 
-    function classRoomTemplate(title, tag) {
+    function classRoomTemplate(tag) {
         return `
-        <li>
-            <a href="#back">
-                <span class="valign-wrapper" style="justify-content: center">
-                    <i class="material-icons" style="margin-right: 5px">subdirectory_arrow_left</i>
-                    <span>上一頁</span>
-                </span>
-            </a>
-        </li>
-        <li>
-            <h5 class="center-align">${title}</h5>
-        </li>
-        <li><a href="#201" class="btn waves-effect waves-light pink accent-1">${tag} 201</a></li>
-        <li><a href="#301" class="btn waves-effect waves-light pink accent-1">${tag} 301</a></li>
-        <li><a href="#401" class="btn waves-effect waves-light pink accent-1">${tag} 401</a></li>`;
+        <option value="" disabled selected>Choose your option</option>
+        <option value="201">${tag} 201</option>
+        <option value="301">${tag} 301</option>
+        <option value="401">${tag} 401</option>`;
     }
 
     $("#form-btn").click(renderForm);

@@ -51,3 +51,19 @@ body {
 .text-brown {
     color: #555555;
 }
+
+.room-select-bg {
+    background-color: #E9EDF5;
+}
+
+.border-radius-5 {
+    border-radius: 5px;
+}
+
+.addIcon-bg {
+    background-color: #EFA5AF;
+}
+
+.fc-center {
+    color: #555555;
+}
