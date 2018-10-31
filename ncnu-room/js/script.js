@@ -58,6 +58,13 @@ $(document).ready(function () {
                     if (res.hasOwnProperty(key)) {
                         for (const inner_key in res[key]) {
                             if (res[key].hasOwnProperty(inner_key)) {
+                                if(res[key][inner_key].state == "未核准"){
+                                    if(res[key][inner_key].name == getCookie("key")){
+                                        res[key][inner_key].color = "orange";
+                                    } else {
+                                        res[key][inner_key].color = "red";
+                                    }
+                                }
                                 eventData.push(res[key][inner_key]);
                             }
                         }

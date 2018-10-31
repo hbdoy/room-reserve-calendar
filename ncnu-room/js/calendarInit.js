@@ -41,7 +41,7 @@ $(document).ready(function () {
         },
         eventClick: function (event, element) {
 
-            // console.log(event, element);
+            console.log(event);
 
             // event.title = "CLICKED!";
 

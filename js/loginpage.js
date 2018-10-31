@@ -25,7 +25,7 @@ $(document).ready(function () {
         $("#notify").html(`
           <div class="input-field col l10 offset-l1 m10 offset-m1 s10 offset-s1">
             <input type="text" class="validate" value="${data.lineUserID}" readonly>
-            <label class="active" for="modify_email">Please bind the LineBot instantly!</label>
+            <label class="active red-text" for="modify_email">Please bind the LineBot instantly!</label>
           </div>
         `);
       }
