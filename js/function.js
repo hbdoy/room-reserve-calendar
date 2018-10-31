@@ -68,7 +68,7 @@ $(document).ready(function () {
         },
         error: function (error) {
           console.log(error);
-          alert("發生錯誤");
+          alert("帳號或密碼錯誤");
         }
       });
     } else {
