@@ -4,11 +4,15 @@
 <head>
   <title>User Login</title>
 </head>
+<script src="./js/hash.js"></script>
+<script>
+  checkLogin() ? "" : window.location.href = './login.html';
+</script>
 <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans+SC|Montserrat|Julius+Sans+One|Josefin+Slab" rel="stylesheet">
 <!-- Compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<link rel="stylesheet" type="text/css" href="css/loginOutlook.css">
+<link rel="stylesheet" type="text/css" href="./css/loginOutlook.css">
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
 <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
@@ -46,7 +50,7 @@
       </li>
       <li><a class="btn-floating deep-orange lighten-1 modal-trigger" data-target="modal2"><i class="material-icons">account_circle</i></a>
       </li>
-      <li><a class="btn-floating deep-orange lighten-2"><i class="material-icons">exit_to_app</i></a>
+      <li><a id="logoutBtn" class="btn-floating deep-orange lighten-2"><i class="material-icons">exit_to_app</i></a>
       </li>
     </ul>
   </div>
@@ -80,6 +84,7 @@
             <input id="modify_department" type="text" class="validate" name="department" value=" " readonly="readonly">
             <label for="modify_department">Department</label>
           </div>
+          <div id="notify"></div>
           <div class="input-field col l10 offset-l1 m10 offset-m1 s10 offset-s1">
             <input id="modify_email" type="email" class="validate" name="email" value="@">
             <label for="modify_email">E-Mail</label>
@@ -93,12 +98,16 @@
             <label for="modify_cardid">Card ID</label>
           </div>
           <div class="input-field col l10 offset-l1 m10 offset-m1 s10 offset-s1">
-            <input id="before_password" type="password" class="validate" name="password" required>
+            <input id="before_password" type="password" class="validate" name="password">
             <label for="before_password">Password</label>
           </div>
           <div class="input-field col l10 offset-l1 m10 offset-m1 s10 offset-s1">
             <input id="modify_password" type="password" class="validate" name="newpassword">
             <label for="modify_password">New Password</label>
+          </div>
+          <div class="input-field col l10 offset-l1 m10 offset-m1 s10 offset-s1">
+            <input id="modify_cpassword" type="password" class="validate" name="cnewpassword">
+            <label for="modify_cpassword">Confirm Password</label>
           </div>
         </div>
         <div class="input-field col l12 m12 s12">
@@ -131,7 +140,7 @@
   <script type="text/javascript" src="js/loginpage.js"></script>
 </body>
 <footer>
-  copyright © 2018 All rights reserved.
+  copyright Â© 2018 All rights reserved.
 </footer>
 
 </html>

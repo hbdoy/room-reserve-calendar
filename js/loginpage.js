@@ -1,12 +1,11 @@
-/* Modal */
 $(document).ready(function () {
   $('.modal').modal();
-})
+  $('.collapsible').collapsible();
+  $('.fixed-action-btn').floatingActionButton();
 
-/* Modify -> Get JSON */
-$(document).ready(function () {
+  /* Modify -> Get JSON */
   $.ajax({
-    url: "https://暨大猴子.tw/api/user/104213083",
+    url: `https://暨大猴子.tw/api/user/${getCookie("key")}`,
     type: "GET",
     dataType: "json",
     success: function (data) {
@@ -22,64 +21,58 @@ $(document).ready(function () {
         $('#modify_cardid').val(allcard);
       }
       $('#modify_cellphone').val(data.cellphone);
+      if(data.lineUserID){
+        $("#notify").html(`
+          <div class="input-field col l10 offset-l1 m10 offset-m1 s10 offset-s1">
+            <input type="text" class="validate" value="${data.lineUserID}" readonly>
+            <label class="active" for="modify_email">Please bind the LineBot instantly!</label>
+          </div>
+        `);
+      }
     },
     error: function () {
       alert("ERROR!!!");
     }
-  });
-});
+  })
 
-/* warning */
-$(document).ready(function () {
-  $('.collapsible').collapsible();
-});
+  /* Upload Image */
+  var base64photo;
 
-/* Upload Image */
-var base64photo;
-function readURL(input) {
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
-    reader.onload = function (e) {
-      base64photo = e.target.result;
-      $('#modify_imagePreview').css('background-image', 'url(' + e.target.result + ')');
-      $('#modify_imagePrevieww').hide();
-      $('#modify_imagePreview').fadeIn(650);
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        base64photo = e.target.result;
+        $('#modify_imagePreview').css('background-image', 'url(' + e.target.result + ')');
+        $('#modify_imagePrevieww').hide();
+        $('#modify_imagePreview').fadeIn(650);
+      }
+      reader.readAsDataURL(input.files[0]);
     }
-    reader.readAsDataURL(input.files[0]);
   }
-}
-$("#modify_imageUpload").change(function () {
-  readURL(this);
-});
 
-/* FAB */
-$(document).ready(function () {
-  $('.fixed-action-btn').floatingActionButton();
-});
+  $("#modify_imageUpload").change(function () {
+    readURL(this);
+  })
 
-document.addEventListener('DOMContentLoaded', function () {
-  var elems = document.querySelectorAll('.fixed-action-btn');
-  var instances = M.FloatingActionButton.init(elems, {
-    direction: 'top',
-    hoverEnabled: false
-  });
-});
-
-/* PATCH JSON */
-$(document).ready(function () {
+  // 修改
   $("#submitmodify").click(function (e) {
     e.preventDefault();
+    if($("#modify_password").val() != "" && $("#modify_password").val() != $("#modify_cpassword").val()){
+      alert("新密碼兩次輸入不一致");
+      return;
+    }
     $.ajax({
       asyn: true,
       crossDomain: true,
       type: 'PATCH',
-      url: 'https://暨大猴子.tw/api/register/104213083',
+      url: `https://暨大猴子.tw/api/register/${getCookie("key")}`,
       data: JSON.stringify({
         "photo": base64photo,
         "name": $("#modify_name").val(),
         "email": $("#modify_email").val(),
         "password": $("#before_password").val(),
-        "newpassword": $("#modify_password").val(),
+        "newpassword": $("#modify_password").val() != ""? $("#modify_password").val():"",
         "cellphone": $("#modify_cellphone").val()
       }),
       headers: {
@@ -88,11 +81,26 @@ $(document).ready(function () {
       },
       success: function (data) {
         console.log(data);
+        alert("修改成功");
+        location.reload();
       },
       error: function (data) {
         // console.log(data.password);
         alert(data.responseJSON.message);
       }
     });
+  });
+
+  $("#logoutBtn").click(function(e){
+    e.preventDefault();
+    logout();
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  var elems = document.querySelectorAll('.fixed-action-btn');
+  var instances = M.FloatingActionButton.init(elems, {
+    direction: 'top',
+    hoverEnabled: false
   });
 });

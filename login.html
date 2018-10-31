@@ -12,6 +12,7 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
 <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<script src="./js/hash.js"></script>
 
 <body>
   <div class="row">
@@ -32,8 +33,8 @@
                 </div>
                 <div class="row">
                   <div class="input-field col l12 m12 s12">
-                    <input id="signin_email" type="email" class="validate">
-                    <label for="signin_email">Email</label>
+                    <input id="signin_account" type="text" class="validate">
+                    <label for="signin_account">Account</label>
                   </div>
                   <div class="input-field col l12 m12 s12">
                     <input id="signin_password" type="password" class="validate">
@@ -41,7 +42,7 @@
                   </div>
                 </div>
                 <div class="input-field center-align btnmargin">
-                  <button class="btn button waves-effect" type="submit" name="action" id="signin_btn">
+                  <button class="btn button waves-effect" name="action" id="signin_btn">
                     Submit
                   </button>
                 </div>
@@ -68,7 +69,7 @@
               <label for="register_imageUpload" id="label1"></label>
             </div>
             <div class="avatar-preview">
-              <div id="imagePreview" style="background-image: url(account.png);">
+              <div id="imagePreview" style="background-image: url(./img/account.png);">
               </div>
             </div>
           </div>
@@ -120,7 +121,7 @@
       </div>
     </div>
   </div>
-  <script type="text/javascript" src="js/function.js"></script>
+  <script type="text/javascript" src="./js/function.js"></script>
 </body>
 <footer>
   copyright © 2018 All rights reserved.
