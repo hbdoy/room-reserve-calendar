@@ -132,5 +132,7 @@ var checkLogin = () => sha256(getCookie("key") + s) === getCookie("value");
 var logout = () => {
     setCookie("key", "", -1);
     setCookie("value", "", -1);
+    setCookie("space", "", -1);
+    setCookie("admin", "", -1);
     window.location.href = './index.html';
 }

@@ -58,10 +58,12 @@ $(document).ready(function () {
           password: $("#signin_password").val()
         },
         success: function (result) {
-          console.log(result.status);
-          if (result.status) {
+          console.log(result);
+          if (result) {
             setCookie("key", $("#signin_account").val(), 6);
             setCookie("value", sha256($("#signin_account").val() + s), 6);
+            setCookie("admin", result.admin, 6);
+            setCookie("space", result.space ?JSON.stringify(result.space):"", 6);
             window.location.href = './index.html';
             console.log("驗證完成");
           }

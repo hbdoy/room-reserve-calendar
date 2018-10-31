@@ -42,6 +42,23 @@ $(document).ready(function () {
         eventClick: function (event, element) {
 
             console.log(event);
+            $("#infoModal p").html(`
+            <div class="row">
+                <div class="col s12 m6 mb-md-2">
+                    借用人: ${event.name}
+                </div>
+                <div class="col s12 m6 mb-md-2">
+                    用途: ${event.title}
+                </div>
+                <div class="col s12 m6">
+                    開始時間: ${event.start._i}
+                </div>
+                <div class="col s12 m6">
+                    結束時間: ${event.end._i}
+                </div>
+            </div>
+            `);
+            M.Modal.init(document.querySelector('#infoModal')).open();
 
             // event.title = "CLICKED!";
 
@@ -135,20 +152,20 @@ $(document).ready(function () {
 
         // 透過函數取得
         // events: function (start, end, timezone, callback) {
-            // $.ajax({
-            //     ...
-            //     success: function (doc) {
-            //         var events = [];
-            //         $(doc).find('event').each(function () {
-            //             events.push({
-            //                 title: $(this).attr('title'),
-            //                 start: $(this).attr('start') // will be parsed
-            //             });
-            //         });
-            //         callback(events);
-            //     }
-            // });
-            // callback([{start: "2018-09-09", title: "財金系"}]);
+        // $.ajax({
+        //     ...
+        //     success: function (doc) {
+        //         var events = [];
+        //         $(doc).find('event').each(function () {
+        //             events.push({
+        //                 title: $(this).attr('title'),
+        //                 start: $(this).attr('start') // will be parsed
+        //             });
+        //         });
+        //         callback(events);
+        //     }
+        // });
+        // callback([{start: "2018-09-09", title: "財金系"}]);
         // }
     });
 

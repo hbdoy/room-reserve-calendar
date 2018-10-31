@@ -11,6 +11,7 @@ $(document).ready(function () {
     success: function (data) {
       $('#modify_imagePreview').css('background-image', 'url(' + data.photo + ')');
       $('#modify_name').val(data.name);
+      $('#userName').html(data.name);
       $('#modify_department').val(data.department);
       $('#modify_email').val(data.email);
       var allcard = "";
