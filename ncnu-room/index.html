@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+    <link href='./css/fullcalendar.min.css' rel='stylesheet' />
+    <link href='./css/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+    <link href='./css/space.css' rel='stylesheet' />
+    <link href='./css/style.css' rel='stylesheet' />
+    <script src='./js/moment.min.js'></script>
+    <script src='./js/jquery.min.js'></script>
+    <script src='./js/fullcalendar.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+    <nav>
+        <div class="nav-wrapper px-md-2 bg-gradient-level">
+            <a href="#!" class="brand-logo">
+                <img class="d-none-sm" src="./img/icon.png" width="30px">
+                WannaBanana
+            </a>
+            <a href="#" data-target="myNavBar" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="#"><i class="material-icons">person</i></a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Alerts</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <ul class="sidenav bg-gradient" id="myNavBar">
+        <li style="background-color: #D6939D"><a href="#"><i class="material-icons white-text">person</i></a></li>
+        <li class="text-center"><a href="#">Settings</a></li>
+        <li class="text-center"><a href="#">Alerts</a></li>
+        <li class="text-center"><a href="#">Logout</a></li>
+    </ul>
+    <div class="wrapper px-md-1 py-2">
+        <div class="row">
+            <div class="col s12 m2">
+                <ul class="collapsible">
+                    <li class="active">
+                        <div class="collapsible-header room-select-bg">
+                            <div class="text-center text-brown w100" style="font-size: 20px">College</div>
+                        </div>
+                        <div class="collapsible-body text-center py-1">
+                            <div class="mb-1"><a class="text-brown" href="#m" style="font-size: 23px">管理學院</a></div>
+                            <div class="mb-1"><a class="text-brown" href="#h" style="font-size: 23px">人文學院</a></div>
+                            <div class="mb-1"><a class="text-brown" href="#t" style="font-size: 23px">科技學院</a></div>
+                            <div class="mb-1"><a class="text-brown" href="#e" style="font-size: 23px">教育學院</a></div>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="collapsible">
+                    <li class="active">
+                        <div class="collapsible-header room-select-bg">
+                            <div class="text-center text-brown w100" style="font-size: 20px">Classroom</div>
+                        </div>
+                        <div class="collapsible-body text-center py-1">
+                            <select id="class-room" class="browser-default room-select-bg text-brown border-radius-5">
+                                <option value="" disabled selected>College First</option>
+                            </select>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col s12 m10">
+                <div class="col s12" style="margin-bottom: 20px">
+                    <h3 id="header-text" class="grey-text text-darken-2">教室預約</h3>
+                    <div class="divider"></div>
+                </div>
+                <div class="col s12">
+                    <div id='calendar'></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fixed-action-btn">
+        <a id="form-btn" class="btn-floating btn-large addIcon-bg waves-effect waves-light" href="#">
+            <i class="large material-icons">add</i>
+        </a>
+    </div>
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+        <div id="reserve-form" class="modal-content">
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+        </div>
+    </div>
+
+    <script src="./js/calendarInit.js"></script>
+    <script src="./js/script.js"></script>
+</body>
+
+</html>
